@@ -6,7 +6,9 @@ function yieldContent() {
 // Start output buffering to capture the content
 ob_start();
 ?>
-
+<div class="main-content m-5 border border-primary">
+    table mo nalng dito
+</div>
 <?php
 // End buffering and store the captured content in a variable
 $content = ob_get_clean();
