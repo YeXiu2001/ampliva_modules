@@ -873,7 +873,7 @@ button {
 }
 
 
-table {
+/* table {
     min-width: max-content;
     border-collapse: separate;
     border-spacing: 0px;
@@ -906,7 +906,7 @@ table {
         font-size: 15px;
         border: 1px;
         padding-left: 20px;
-    }
+    } */
 
 .action_btn {
     display: flex;
@@ -938,7 +938,7 @@ table {
             box-shadow: 0 3px 8px #0003;
         }
 
-table > tbody > tr {
+/* table > tbody > tr {
     background-color: #fff;
     transition: 0.3s ease-in-out;
 }
@@ -949,7 +949,7 @@ table > tbody > tr {
 
     table > tbody > tr:hover {
         filter: drop-shadow(0px 2px 6px #0002);
-    }
+    } */
 
 .edit-button {
     background-color: #4CAF50;

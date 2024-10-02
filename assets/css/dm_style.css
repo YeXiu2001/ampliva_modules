@@ -531,30 +531,6 @@ nav .profile img {
     visibility: visible;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse; /* Ensures no borders */
-    font-size: 16px;
-    color: #333;
-}
-
-th, td {
-    padding: 12px;
-    text-align: left;
-    resize: both;
-    border: none; /* Remove borders */
-    max-width: 3in; /* Set the maximum width to 3 inches */
-    word-wrap: break-word; /* Ensure text wrap */
-}
-
-th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-}
-
-tr:hover {
-    background-color: #f9f9f9;
-}
 
 .toggle-icon {
     cursor: pointer;
@@ -927,21 +903,7 @@ button:focus {
 }
 
 /* Add resizable columns */
-table th.resizable {
-    position: relative;
-}
-table th.resizable::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: 5px;
-    cursor: col-resize;
-}
-table th.resizable:hover::after {
-    background-color: rgba(0, 0, 0, 0.1);
-}
+
 
 
 
@@ -1060,4 +1022,21 @@ body {
     background-color: #0056b3;
 }
 
+::-webkit-scrollbar {
+    width: 5px; /* Width of the scrollbar */
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3ade95; 
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3ade95;
+}
 
