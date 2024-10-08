@@ -179,7 +179,16 @@ ob_start();
         $('#test tbody').on('click', 'td.details-control', function () {
             let tr = $(this).closest('tr');
             let row = table.row(tr);
+            let adgroupcount = tr.find('[data-adg-count]').data('adg-count');
 
+            if (adgroupcount == 0) {
+                swal.fire({
+                    title: 'No Adgroup Data',
+                    text: 'This campaign has no adgroup data',
+                    icon: 'info'
+                });
+                return;
+            }
             if (row.child.isShown()) {
                 // if row shown, hide it
                 row.child.hide();
@@ -187,12 +196,7 @@ ob_start();
             }
             else {
                 let campaignId = tr.find('[data-c-id]').data('c-id');
-                // let adgroupcount = tr.find('[data-adg-count]');
-
-                // console.log(adgroupcount)
                 let adgroupData = alladgdata.filter(adg => adg.campaign_id == campaignId);
-
-
                 showAdgroupRow(adgroupData, row, tr);
             }
         });
