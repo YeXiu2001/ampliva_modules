@@ -25,6 +25,7 @@ ob_start();
         display: flex;
         overflow-x: auto;
         white-space: nowrap;
+
     }
 
     .scrollable-row span {
@@ -60,7 +61,7 @@ ob_start();
         margin: 0 0 5px;
     }
 
-    /*START Styles for expandable rows */
+    /* Styles for expandable rows */
     td.details-control  {
         cursor: pointer;
         width: 20px;
@@ -91,7 +92,6 @@ ob_start();
     tr.shown td.adgDetails:before {
         content: '-';
     }
-    /*END Styles for expandable rows */
 
     /* Ensure the nested table fits well */
     .child-row-content table {
@@ -103,20 +103,16 @@ ob_start();
         .dataTables_scrollBody table {
             width: 100% !important;
     }
-
-    .shortnames{
-        cursor: pointer;
-    }
 </style>
 
 <div class="main-content m-5">
     <div class="row">
         <div class="col-12 mt-5">
             <!-- <h4 class="text-primary">Tiktok Campaigns</h4> -->
-        <div class="col-12 border border-primary">
-            <h4 class="text-primary">REFERENCE Campaigns</h4>
-
-        </div>
+            <!-- <select class="form-select" id="metrics-select">
+                            <option value="">original Column</option>
+                            <?= $metrics_options ?>
+                        </select> -->
         <table id="test" class="text-nowrap table table-striped table-bordered align-middle">
             <thead>
                 <tr>
@@ -128,20 +124,141 @@ ob_start();
                     <th>Advertiser Name</th>
                     <th>KPI Calculation</th>
                     <th id="metricHeader">Metric</th>
+                    <!-- Basic Metric index 7 - 27 -->
+                    <th>Result</th>
+                    <th>Cost per Result</th>
+                    <th>Total Cost</th>
+                    <th>CPC</th>
+                    <th>CPM</th>
+                    <th>Impressions</th>
+                    <th>Clicks</th>
+                    <th>Clicks (All)</th>
+                    <th>CTR</th>
+                    <th>Reach</th>
+                    <th>Cost per 1,000 Reached</th>
+                    <th>Frequency</th>
+                    <th>Conversions</th>
+                    <th>CPA</th>
+                    <th>CVR</th>
+                    <th>Real-time Conversions</th>
+                    <th>Real-time CPA</th>
+                    <th>Real-time CVR</th>
+                    <th>Conversions (SKAN click time)</th>
+                    <th>CPA (SKAN click time)</th>
+                    <th>CVR (SKAN click time)</th>
+
+                    <!-- Video Views index 28 - 37 -->
+                    <th>Video Views</th>
+                    <th>2-Second Video Views</th>
+                    <th>6-Second Video Views</th>
+                    <th>6-Second Views (Focused View)</th>
+                    <th>Video Views at 100%</th>
+                    <th>Video Views at 75%</th>
+                    <th>Video Views at 50%</th>
+                    <th>Video Views at 25%</th>
+                    <th>Average Watch Time per Video View</th>
+                    <th>Average Watch Time per Person</th>
+
+                    <!-- Engagement index 38 - 45 -->
+                     <!-- <th>Total Engagement</th>
+                     <th>Engagement Rate</th>
+                     <th>Paid Followers</th>
+                     <th>Paid Likes</th>
+                     <th>Paid Comments</th>
+                     <th>Paid Shares</th>
+                     <th>Paid Profile Visits</th>
+                     <th>Paid Profile Visit Rate</th> -->
+
+                     <!-- Interactive Add On index 46 - 51 -->
+                      <!-- <th>IA Impressions</th>
+                      <th>IA Destination Clicks</th>
+                      <th>IA Activity Clicks</th>
+                      <th>IA Option A Clicks</th>
+                      <th>IA Option B Clicks</th>
+                      <th>IA Recall Clicks</th> -->
+
+                      <!-- Live Views index 52 - 55 -->
+                    <!-- <th>LIVE Views</th>
+                    <th>LIVE Unique Views</th>
+                    <th>Effective LIVE Views</th>
+                    <th>LIVE Product Clicks</th> -->
+
+                    <!-- In App Event index 56 - 66 -->
+                    <!-- <th>Real-time App Install</th>
+                    <th>App Install</th>
+                    <th>Registration</th>
+                    <th>Purchase</th>
+                    <th>Add to Cart</th>
+                    <th>View Content</th>
+                    <th>Day 1 retention</th>
+                    <th>Unique Day 7 Retention</th>
+                    <th>Add Payment Info</th>
+                    <th>Add to Wishlist</th>
+                    <th>Launch App</th> -->
+
+                    <!-- Page Event index 67 - 82 -->
+                    <!-- <th>Complete Payment ROAS</th>
+                    <th>Complete Payment</th>
+                    <th>Page View</th>
+                    <th>Click Button</th>
+                    <th>Contact</th>
+                    <th>Complete Registration</th>
+                    <th>View Content</th>
+                    <th>Add to Cart</th>
+                    <th>Place an Order</th>
+                    <th>Initiate Checkout</th>
+                    <th>Add Payment Info</th>
+                    <th>Search</th>
+                    <th>Submit Form</th>
+                    <th>Download</th>
+                    <th>Add to Wishlist</th>
+                    <th>Subscribe</th> -->
+
+                    <!-- Attribution index 83-98 -->
+                    <!-- <th>VTA Conversion</th>
+                    <th>Cost per VTA Conversion</th>
+                    <th>VTA App Install</th>
+                    <th>Cost per VTA App Install</th>
+                    <th>VTA Registration</th>
+                    <th>Cost per VTA Registration</th>
+                    <th>VTA Purchase</th>
+                    <th>Cost per VTA Purchase</th>
+                    <th>CTA Conversion</th>
+                    <th>Cost per CTA Conversion</th>
+                    <th>CTA App Install</th>
+                    <th>Cost CTA App Install</th>
+                    <th>CTA Registration</th>
+                    <th>Cost per CTA Registration</th>
+                    <th>CTA Purchase</th>
+                    <th>Cost per CTA Purchase</th> -->
+
+                    <!-- Web Conversion index 99 - 110  -->
+                    <!-- <th>Complete Payment ROAS (Onsite)</th>
+                    <th>Complete Payment (Onsite)</th>
+                    <th>Initiate Checkout (Onsite)</th>
+                    <th>Product Details Page View (Onsite)</th>
+                    <th>Add to Wishlist (Onsite)</th>
+                    <th>Add Billing (Onsite)</th>
+                    <th>Add to Cart (Onsite)</th>
+                    <th>Form Submission (Onsite)</th>
+                    <th>App Store Click (Onsite)</th>
+                    <th>Page Views (Onsite)</th>
+                    <th>CTA Button Clicks (Onsite)</th>
+                    <th>Product Clicks (Onsite)</th> -->
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($campaign_data as $cd) { ?>
                 <tr>
                     <td class="details-control"></td>
-                    <td data-c-id="<?=$cd['campaign_id']?>">
-                        <span class="text-primary shortnames"><?=$cd['short_camp']?></span><br>
+                    <td class="text-primary" data-c-id="<?=$cd['campaign_id']?>">
+                        <?=$cd['short_camp']?><br>
                         <select class="form-select metrics-select" id="metricstbl" style="font-size: 11px; padding-top:0.1rem; padding-bottom:0.1rem">
                             <option value="">original Column</option>
                             <?= $metrics_options ?>
                         </select>
                     </td>
-                    <td data-adg-count="<?=$cd['adgroup_count']?>">
+                    <td>
                         <div style="display: flex; justify-content: space-between;">
                             <span><?=$cd['adgroup_count']?></span>
                             <span class="text-primary m-0 p-0"><i style="font-size:1rem;" class='bx bxs-show'></i></span>
@@ -149,9 +266,43 @@ ob_start();
                     </td>
                     <td><?= htmlspecialchars($cd['spend']) ?></td>
                     <td><?= htmlspecialchars($cd['objective_type']) ?></td>
-                    <td><span class="text-primary shortnames"><?= $cd['short_adname'] ?></span></td>
+                    <td class="text-primary"><?= htmlspecialchars($cd['short_adname']) ?></td>
                     <td>TBD</td>
                     <td class="metricsHere">Select Metric to Change</td>
+                    <!-- basic metric -->
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+
+                    <!-- Video Views -->
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
                 </tr>
                 <?php 
                 }
@@ -174,7 +325,6 @@ ob_start();
 
     $(document).ready(function() {
         initializeDataTable();
-
         // Details control event listener
         $('#test tbody').on('click', 'td.details-control', function () {
             let tr = $(this).closest('tr');
@@ -187,18 +337,13 @@ ob_start();
             }
             else {
                 let campaignId = tr.find('[data-c-id]').data('c-id');
-                // let adgroupcount = tr.find('[data-adg-count]');
-
-                // console.log(adgroupcount)
                 let adgroupData = alladgdata.filter(adg => adg.campaign_id == campaignId);
-
-
                 showAdgroupRow(adgroupData, row, tr);
             }
         });
+        //END details control event listener
 
-
-         // event listener for inline metric select
+         // Attach event listener for metric select dropdowns
          $('#test tbody').on('change', '#metricstbl', function() {
             const selectedValue = $(this).val();
             const $row = $(this).closest('tr');
@@ -207,20 +352,6 @@ ob_start();
             // Clear any existing content in the metricsHere cell
             $metricsCell.empty();
             configInlineMetric(selectedValue, $metricsCell);
-        });
-
-        $('#test').on('click', 'td.adgDetails', function() {
-            let tr = $(this).closest('tr');
-            let adNestedTable = $(this).closest('table').DataTable();
-            let row = adNestedTable.row(tr);
-            console.log("ni run ni");
-            if (row.child.isShown()) {
-                row.child.hide();
-                tr.removeClass('shown');
-            } else {
-                // Pass 'row' and 'tr' to the function to handle ad rows
-                showAdRow(row, tr);
-            }
         });
     });//DOMContentLoaded  
     
@@ -406,7 +537,7 @@ ob_start();
     
     function showAdgroupRow(adgroupData, row, tr) {
         let nestedTable = `
-                    <table class="table table-bordered table-striped adgroupTbl " style="width:100%;">
+                    <table class="table table-bordered table-striped" style="width:100%;">
                         <thead>
                             <tr>
                                 <th></th>
@@ -429,7 +560,7 @@ ob_start();
                     nestedTable += `
                         <tr>
                             <td class="adgDetails"></td>
-                            <td><span class="text-primary shortnames">${adg.short_adg}</span></td>
+                            <td>${adg.adgroup_name}</td>
                             <td>${adg.ad_count}</td>
                             <td>${adg.impressions}</td>
                             <td>${adg.ctr}</td>
@@ -451,62 +582,8 @@ ob_start();
                 // Show the nested table
                 row.child(nestedTable).show();
                 tr.addClass('shown');
-
-                nestedTable = tr.next('tr').find('table.adgroupTbl');
-                nestedTable.DataTable();
     }
 
-    function showAdRow(row, tr){
-        // declare data from the query
-
-        // loop
-        let adNestedTable = `
-                    <table class="table table-bordered table-striped adTbl" style="width:100%;">
-                        <thead>
-                            <tr>
-                                <th>Ad Name</th>
-                                <th>Result of the Ads</th>
-                                <th>Impressions of the ad</th>
-                                <th>CTR</th>
-                                <th>CPC</th>
-                                <th>CPM</th>
-                                <th>Clicks</th>
-                                <th>Cost per Result</th>
-                                <th>Reach</th>
-                                <th>Frequency</th>
-                                <th>Billed Cost</th>
-                                <th>Ad Metrics</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                    
-                            <tr>
-                                <td>TBD</td>
-                                <td>TBD</td>
-                                <td>TBD</td>
-                                <td>TBD</td>
-                                <td>TBD</td>
-                                <td>TBD</td>
-                                <td>TBD</td>
-                                <td>TBD</td>
-                                <td>TBD</td>
-                                <td>TBD</td>
-                                <td>TBD</td>
-                                <td>TBD</td>
-                            </tr>
-                        </tbody>
-                        
-
-                `;
-
-                // Show the nested ad table
-                row.child(adNestedTable).show();
-                tr.addClass('shown');
-
-                // Initialize DataTable on the nested ad table
-                // adNestedTable.DataTable();
-    }
-    
     function initializeDataTable() {
         if ($.fn.DataTable.isDataTable('#test')) {
             $('#test').DataTable().destroy();
@@ -523,7 +600,72 @@ ob_start();
                 $('body').removeClass('blurred');
             }
         });
-        //hideMetricCols();
+        hideMetricCols();
+    }
+
+    // hideMetricCols is for initialization(only shows campaign initial data)
+    function hideMetricCols() {
+        let totalColumns = table.columns().count(); // Get total number of columns
+
+        // Create an array of indexes from 7 to the last column
+        let columnsToHide = Array.from({length: totalColumns - 8}, (v, i) => i + 8);
+
+        // Hide the selected columns
+        table.columns(columnsToHide).visible(false);
+    }
+
+    // START show metric columns for whole table
+    function showBasicMetric(){
+        let columnsToShow = Array.from({length: 21}, (v, i) => i + 8);
+        table.columns(columnsToShow).visible(true);
+        hideInlineMetrics();
+    }
+    //Prio change28 + 1
+    function showVideMetrics(){
+        let columnsToShow = Array.from({length: 10}, (v, i) => i + 29);
+        table.columns(columnsToShow).visible(true);
+    }
+
+    function showEngagement(){
+        let columnsToShow = Array.from({length: 8}, (v, i) => i + 39);
+        table.columns(columnsToShow).visible(true);
+    }
+
+    function showIAMetrics(){
+        let columnsToShow = Array.from({length: 6}, (v, i) => i + 47);
+        table.columns(columnsToShow).visible(true);
+    }
+
+    function showLiveViews(){
+        let columnsToShow = Array.from({length: 4}, (v, i) => i + 53);
+        table.columns(columnsToShow).visible(true);
+    }
+
+    function showInAppEvent(){
+        let columnsToShow = Array.from({length: 11}, (v, i) => i + 56);
+        table.columns(columnsToShow).visible(true);
+    }
+
+    function showPageEvent(){
+        let columnsToShow = Array.from({length: 16}, (v, i) => i + 68);
+        table.columns(columnsToShow).visible(true);
+    }
+
+    function showAttribution(){
+        let columnsToShow = Array.from({length: 16}, (v, i) => i + 84);
+        table.columns(columnsToShow).visible(true);
+    }
+
+    function showWebConversion(){
+        let columnsToShow = Array.from({length: 12}, (v, i) => i + 100);
+        table.columns(columnsToShow).visible(true);
+    }
+    // END show metric columns for whole table
+
+    // hide metrics column when metric for whole table is triggered
+    function hideInlineMetrics(){
+        let columnToHide = 7;
+        table.column(columnToHide).visible(false);
     }
 </script>
 <?php
