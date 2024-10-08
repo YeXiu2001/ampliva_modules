@@ -113,10 +113,10 @@ ob_start();
     <div class="row">
         <div class="col-12 mt-5">
             <!-- <h4 class="text-primary">Tiktok Campaigns</h4> -->
-        <div class="col-12 border border-primary">
+        <!-- <div class="col-12 border border-primary">
             <h4 class="text-primary">REFERENCE Campaigns</h4>
 
-        </div>
+        </div> -->
         <table id="test" class="text-nowrap table table-striped table-bordered align-middle">
             <thead>
                 <tr>
@@ -134,9 +134,9 @@ ob_start();
                 <?php foreach ($campaign_data as $cd) { ?>
                 <tr>
                     <td class="details-control"></td>
-                    <td data-c-id="<?=$cd['campaign_id']?>">
+                    <td class="text" data-c-id="<?=$cd['campaign_id']?>">
                         <span class="text-primary shortnames"><?=$cd['short_camp']?></span><br>
-                        <select class="form-select metrics-select" id="metricstbl" style="font-size: 11px; padding-top:0.1rem; padding-bottom:0.1rem">
+                        <select class="form-select metrics-select" id="metricstbl" style="font-size: 11px; padding-top:0.1rem; padding-bottom:0.1rem; margin-bottom: 0;">
                             <option value="">original Column</option>
                             <?= $metrics_options ?>
                         </select>
@@ -410,7 +410,7 @@ ob_start();
     
     function showAdgroupRow(adgroupData, row, tr) {
         let nestedTable = `
-                    <table class="table table-bordered table-striped adgroupTbl " style="width:100%;">
+                    <table class="text-nowrap table table-bordered table-striped adgroupTbl " style="width:100%;">
                         <thead>
                             <tr>
                                 <th></th>
@@ -433,7 +433,12 @@ ob_start();
                     nestedTable += `
                         <tr>
                             <td class="adgDetails"></td>
-                            <td><span class="text-primary shortnames">${adg.short_adg}</span></td>
+                            <td><span class="text-primary shortnames">${adg.short_adg}</span>
+                            <select class="form-select metrics-select" id="" style="font-size: 11px; padding-top:0.1rem; padding-bottom:0.1rem; margin-bottom: 0;">
+                                <option value="">original Column</option>
+                                <?= $metrics_options ?>
+                            </select>
+                            </td>
                             <td>${adg.ad_count}</td>
                             <td>${adg.impressions}</td>
                             <td>${adg.ctr}</td>
