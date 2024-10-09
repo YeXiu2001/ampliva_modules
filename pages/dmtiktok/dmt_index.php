@@ -209,17 +209,19 @@ ob_start();
             const $row = $(this).closest('tr');
             const $metricsCell = $row.find('.metricsHere');
             const campId = $row.find('.tdcampaign').data('c-id');
+            // use .find since we only need to return a single data which has ID campId
             const campdata = allcdata.find(c => c.campaign_id == campId);
             // Clear any existing content in the metricsHere cell
             $metricsCell.empty();
             configInlineMetric(selectedValue, $metricsCell, campId, campdata);
         });
 
+        // event listener for adgroup details
         $('#test').on('click', 'td.adgDetails', function() {
             let tr = $(this).closest('tr');
             let adNestedTable = $(this).closest('table').DataTable();
             let row = adNestedTable.row(tr);
-            console.log("ni run ni");
+            // console.log("ni run ni");
             if (row.child.isShown()) {
                 row.child.hide();
                 tr.removeClass('shown');
@@ -228,6 +230,21 @@ ob_start();
                 showAdRow(row, tr);
             }
         });
+
+        // event listener for adgroup inline metric select
+        $('#test tbody').on('change', '.adgMetricsSelect', function() {
+             
+            const adgselectedValue = $(this).val();
+            const $adgrow = $(this).closest('tr');
+            const $adgmetricsCell = $adgrow.find('.adgMetrics');
+            const adgId = $adgrow.find('.tdadgroup').data('adg-id');
+            const adgdata = alladgdata.find(adg => adg.adgroup_id == adgId);
+            console.log(adgdata);
+            $adgmetricsCell.empty();
+            configAdgInlineMetric(adgselectedValue, $adgmetricsCell, adgId, adgdata);
+        });
+
+
     });//DOMContentLoaded  
     
     function configInlineMetric(selectedValue, $metricsCell, campId, campdata) {
@@ -724,6 +741,489 @@ ob_start();
         }
     }
     
+    function configAdgInlineMetric(adgselectedValue, $adgmetricsCell, adgId, adgdata){
+        let adgnewcontent = '';
+
+        switch (adgselectedValue) {
+            case '0': // Basic Metric
+                adgnewcontent = `
+                    <div class="scrollable-row d-flex">
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.result}</b></span>
+                            <span class="text-secondary">Result</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.cost_per_result}</b></span>
+                            <span class="text-secondary">Cost per Result</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>TBD!</b></span>
+                            <span class="text-secondary">Total Cost</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.cpc}</b></span>
+                            <span class="text-secondary">CPC</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.cpm}</b></span>
+                            <span class="text-secondary">CPM</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.impressions}</b></span>
+                            <span class="text-secondary">Impressions</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.clicks}</b></span>
+                            <span class="text-secondary">Clicks</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>TBD!</b></span>
+                            <span class="text-secondary">Clicks (All)</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.ctr}</b></span>
+                            <span class="text-secondary">CTR</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.reach}</b></span>
+                            <span class="text-secondary">Reach</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.cost_per_1000_reached}</b></span>
+                            <span class="text-secondary">Cost per 1,000 Reached</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.frequency}</b></span>
+                            <span class="text-secondary">Frequency</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.conversion}</b></span>
+                            <span class="text-secondary">Conversions</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.cost_per_conversion}</b></span>
+                            <span class="text-secondary">CPA</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.conversion_rate}</b></span>
+                            <span class="text-secondary">CVR</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.real_time_conversion}</b></span>
+                            <span class="text-secondary">Real-time Conversions</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.real_time_cost_per_conversion}</b></span>
+                            <span class="text-secondary">Real-time CPA</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.real_time_conversion_rate}</b></span>
+                            <span class="text-secondary">Real-time CVR</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.skan_conversion}</b></span>
+                            <span class="text-secondary">Conversions (SKAN click time)</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.skan_cost_per_conversion}</b></span>
+                            <span class="text-secondary">CPA (SKAN click time)</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${adgdata.skan_conversion_rate}</b></span>
+                            <span class="text-secondary">CVR (SKAN click time)</span>
+                        </div>
+                    </div>`;
+                break;
+
+                case '1': // Video Views
+                    adgnewcontent = `
+                        <div class="scrollable-row d-flex">
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.video_play_actions}</b></span>
+                                <span class="text-secondary">Video Views</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.video_watched_2s}</b></span>
+                                <span class="text-secondary">2-Second Video Views</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.video_watched_6s}</b></span>
+                                <span class="text-secondary">6-Second Video Views</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>TBD!</b></span>
+                                <span class="text-secondary">6-Second Views (Focused View)</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.video_views_p100}</b></span>
+                                <span class="text-secondary">Video Views at 100%</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.video_views_p75}</b></span>
+                                <span class="text-secondary">Video Views at 75%</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.video_views_p50}</b></span>
+                                <span class="text-secondary">Video Views at 50%</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.video_views_p25}</b></span>
+                                <span class="text-secondary">Video Views at 25%</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.average_video_play}</b></span>
+                                <span class="text-secondary">Average Watch Time per Video View</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.average_video_play_per_user}</b></span>
+                                <span class="text-secondary">Average Watch Time per Person</span>
+                            </div>
+                        </div>`;
+                break;
+
+                case '2': // Engagement
+                    adgnewcontent = `
+                        <div class="scrollable-row d-flex">
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.engagements}</b></span>
+                                <span class="text-secondary">Total Engagement</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.engagement_rate}</b></span>
+                                <span class="text-secondary">Engagement Rate</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.follows}</b></span>
+                                <span class="text-secondary">Paid Followers</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.likes}</b></span>
+                                <span class="text-secondary">Paid Likes</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.comments}</b></span>
+                                <span class="text-secondary">Paid Comments</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.shares}</b></span>
+                                <span class="text-secondary">Paid Shares</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.profile_visits}</b></span>
+                                <span class="text-secondary">Paid Profile Visits</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>TBD!</b></span>
+                                <span class="text-secondary">Paid Profile Visit Rate</span>
+                            </div>
+                        </div>`;
+                break;
+
+                case '3': // Interactive Add On
+                    adgnewcontent = `
+                        <div class="scrollable-row d-flex">
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.interactive_add_on_impressions}</b></span>
+                                <span class="text-secondary">IA Impressions</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.interactive_add_on_destination_clicks}</b></span>
+                                <span class="text-secondary">IA Destination Clicks</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.interactive_add_on_activity_clicks}</b></span>
+                                <span class="text-secondary">IA Activity Clicks</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.interactive_add_on_option_a_clicks}</b></span>
+                                <span class="text-secondary">IA Option A Clicks</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.interactive_add_on_option_b_clicks}</b></span>
+                                <span class="text-secondary">IA Option B Clicks</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.countdown_sticker_recall_clicks}</b></span>
+                                <span class="text-secondary">IA Recall Clicks</span>
+                            </div>
+                        </div>`;
+                    break;
+
+                    case '4': // Live Views
+                        adgnewcontent = `
+                            <div class="scrollable-row d-flex">
+                                <div class="col d-flex flex-column align-items-center">
+                                    <span><b>${adgdata.live_views}</b></span>
+                                    <span class="text-secondary">LIVE Views</span>
+                                </div>
+                                <div class="col d-flex flex-column align-items-center">
+                                    <span><b>${adgdata.live_unique_views}</b></span>
+                                    <span class="text-secondary">LIVE Unique Views</span>
+                                </div>
+                                <div class="col d-flex flex-column align-items-center">
+                                    <span><b>${adgdata.live_effective_views}</b></span>
+                                    <span class="text-secondary">Effective LIVE Views</span>
+                                </div>
+                                <div class="col d-flex flex-column align-items-center">
+                                    <span><b>${adgdata.live_product_clicks}</b></span>
+                                    <span class="text-secondary">LIVE Product Clicks</span>
+                                </div>
+                            </div>`;
+                    break;
+
+                    case '5': // In App Event
+                        adgnewcontent = `
+                        <div class="scrollable-row d-flex">
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.app_install}</b></span>
+                                <span class="text-secondary">Real-time App Install</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>TBD!</b></span>
+                                <span class="text-secondary">App Install</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.registration}</b></span>
+                                <span class="text-secondary">Registration</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.purchase}</b></span>
+                                <span class="text-secondary">Purchase</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.app_event_add_to_cart}</b></span>
+                                <span class="text-secondary">Add to Cart</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.view_content}</b></span>
+                                <span class="text-secondary">View Content</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.next_day_open}</b></span>
+                                <span class="text-secondary">Day 1 Retention</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>TBD!</b></span>
+                                <span class="text-secondary">Unique Day 7 Retention</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.add_payment_info}</b></span>
+                                <span class="text-secondary">Add Payment Info</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.add_to_wishlist}</b></span>
+                                <span class="text-secondary">Add to Wishlist</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.launch_app}</b></span>
+                                <span class="text-secondary">Launch App</span>
+                            </div>
+                        </div>`;
+                    break;
+
+                    case '6': // Page Event
+                        adgnewcontent = `
+                        <div class="scrollable-row d-flex">
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.complete_payment_roas}</b></span>
+                                <span class="text-secondary">Complete Payment ROAS</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.complete_payment}</b></span>
+                                <span class="text-secondary">Complete Payment</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.total_pageview}</b></span>
+                                <span class="text-secondary">Page View</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.button_click}</b></span>
+                                <span class="text-secondary">Click Button</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.online_consult}</b></span>
+                                <span class="text-secondary">Contact</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.user_registration}</b></span>
+                                <span class="text-secondary">Complete Registration</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.page_content_view_events}</b></span>
+                                <span class="text-secondary">View Content</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.on_web_order}</b></span>
+                                <span class="text-secondary">Add to Cart</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.web_event_add_to_cart}</b></span>
+                                <span class="text-secondary">Place an Order</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.initiate_checkout}</b></span>
+                                <span class="text-secondary">Initiate Checkout</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>TBD!</b></span>
+                                <span class="text-secondary">Add Payment Info</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.page_event_search}</b></span>
+                                <span class="text-secondary">Search</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.form}</b></span>
+                                <span class="text-secondary">Submit Form</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.download_start}</b></span>
+                                <span class="text-secondary">Download</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.on_web_add_to_wishlist}</b></span>
+                                <span class="text-secondary">Add to Wishlist</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.on_web_subscribe}</b></span>
+                                <span class="text-secondary">Subscribe</span>
+                            </div>
+                        </div>`;
+                    break;
+
+                    case '7': // Attribution
+                        adgnewcontent = `
+                        <div class="scrollable-row d-flex">
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.vta_conversion}</b></span>
+                                <span class="text-secondary">VTA Conversion</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.cost_per_vta_conversion}</b></span>
+                                <span class="text-secondary">Cost per VTA Conversion</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.vta_app_install}</b></span>
+                                <span class="text-secondary">VTA App Install</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.cost_per_vta_app_install}</b></span>
+                                <span class="text-secondary">Cost per VTA App Install</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.vta_registration}</b></span>
+                                <span class="text-secondary">VTA Registration</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.cost_per_vta_registration}</b></span>
+                                <span class="text-secondary">Cost per VTA Registration</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.vta_purchase}</b></span>
+                                <span class="text-secondary">VTA Purchase</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.cost_per_vta_purchase}</b></span>
+                                <span class="text-secondary">Cost per VTA Purchase</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.cta_conversion}</b></span>
+                                <span class="text-secondary">CTA Conversion</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.cost_per_cta_conversion}</b></span>
+                                <span class="text-secondary">Cost per CTA Conversion</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.cta_app_install}</b></span>
+                                <span class="text-secondary">CTA App Install</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.cost_per_cta_app_install}</b></span>
+                                <span class="text-secondary">Cost per CTA App Install</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.cta_registration}</b></span>
+                                <span class="text-secondary">CTA Registration</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.cost_per_cta_registration}</b></span>
+                                <span class="text-secondary">Cost per CTA Registration</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.cta_purchase}</b></span>
+                                <span class="text-secondary">CTA Purchase</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.cost_per_cta_purchase}</b></span>
+                                <span class="text-secondary">Cost per CTA Purchase</span>
+                            </div>
+                        </div>`;
+                    break;
+
+                    case '8': // Web Conversion
+                        adgnewcontent = `
+                        <div class="scrollable-row d-flex">
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.complete_payment_roas}</b></span>
+                                <span class="text-secondary">Complete Payment ROAS (Onsite)</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.complete_payment}</b></span>
+                                <span class="text-secondary">Complete Payment (Onsite)</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.initiate_checkout}</b></span>
+                                <span class="text-secondary">Initiate Checkout (Onsite)</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>TBD!</b></span>
+                                <span class="text-secondary">Product Details Page View (Onsite)</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.on_web_add_to_wishlist}</b></span>
+                                <span class="text-secondary">Add to Wishlist (Onsite)</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>TBD!</b></span>
+                                <span class="text-secondary">Add Billing (Onsite)</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.web_event_add_to_cart}</b></span>
+                                <span class="text-secondary">Add to Cart (Onsite)</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.form}</b></span>
+                                <span class="text-secondary">Form Submission (Onsite)</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>TBD!</b></span>
+                                <span class="text-secondary">App Store Click (Onsite)</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.total_pageview}</b></span>
+                                <span class="text-secondary">Page Views (Onsite)</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>TBD!</b></span>
+                                <span class="text-secondary">CTA Button Clicks (Onsite)</span>
+                            </div>
+                            <div class="col d-flex flex-column align-items-center">
+                                <span><b>${adgdata.live_product_clicks}</b></span>
+                                <span class="text-secondary">Product Clicks (Onsite)</span>
+                            </div>
+                        </div>`;
+                    break;
+
+                    default: // Original or any other value
+                        adgnewcontent = 'Select Metric to Change';
+                        break;
+        }
+
+        // Update the metricsHere cell with the new content
+        $adgmetricsCell.html(adgnewcontent);
+    }
+    
     function showAdgroupRow(adgroupData, row, tr) {
         let nestedTable = `
                     <table class="text-nowrap table table-bordered table-striped adgroupTbl align-middle" style="width:100%;">
@@ -743,14 +1243,14 @@ ob_start();
                         </thead>
                         <tbody>
                 `;
-
                 // Loop through adgroupData and append rows
                 adgroupData.forEach(adg => {
                     nestedTable += `
                         <tr>
                             <td class="adgDetails"></td>
-                            <td><span class="text-primary shortnames">${adg.short_adg}</span>
-                            <select class="form-select metrics-select" id="" style="font-size: 11px; padding-top:0.1rem; padding-bottom:0.1rem; margin-bottom: 0;">
+                            <td class="tdadgroup" data-adg-id="${adg.adgroup_id}">
+                            <span class="text-primary shortnames">${adg.short_adg}</span>
+                            <select class="form-select adgMetricsSelect" id="" style="font-size: 11px; padding-top:0.1rem; padding-bottom:0.1rem; margin-bottom: 0;">
                                 <option value="">original Column</option>
                                 <?= $metrics_options ?>
                             </select>
@@ -762,7 +1262,7 @@ ob_start();
                             <td>${adg.cpm}</td>
                             <td>${adg.clicks}</td>
                             <td>${adg.reach}</td>
-                            <td>Show Metrics</td>
+                            <td class="adgMetrics">Select Metric to Change</td>
                         </tr>
                     `;
                 });
@@ -778,7 +1278,14 @@ ob_start();
                 tr.addClass('shown');
 
                 nestedTable = tr.next('tr').find('table.adgroupTbl');
-                nestedTable.DataTable();
+                nestedTable.DataTable({
+                    // scrollY: 200,
+                    scrollX: true,
+                    pageLength: 10,
+                    fixedColumns: {
+                        leftColumns: 2
+                    }
+                });
     }
 
     function showAdRow(row, tr){
