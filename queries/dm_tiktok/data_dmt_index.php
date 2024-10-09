@@ -56,7 +56,6 @@ $metrics = [
     'Page Event',
     'Attribution',
     'Web Conversion',
-    'Original Column',
 ];
 
 return [

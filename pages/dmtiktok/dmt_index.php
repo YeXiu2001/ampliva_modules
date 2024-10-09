@@ -134,10 +134,10 @@ ob_start();
                 <?php foreach ($campaign_data as $cd) { ?>
                 <tr>
                     <td class="details-control"></td>
-                    <td class="text" data-c-id="<?=$cd['campaign_id']?>">
+                    <td class="tdcampaign" data-c-id="<?=$cd['campaign_id']?>">
                         <span class="text-primary shortnames"><?=$cd['short_camp']?></span><br>
                         <select class="form-select metrics-select" id="metricstbl" style="font-size: 11px; padding-top:0.1rem; padding-bottom:0.1rem; margin-bottom: 0;">
-                            <option value="">original Column</option>
+                            <option value="">Original Column</option>
                             <?= $metrics_options ?>
                         </select>
                     </td>
@@ -147,8 +147,8 @@ ob_start();
                             <span class="text-primary m-0 p-0"><i style="font-size:1rem;" class='bx bxs-show'></i></span>
                         </div>
                     </td>
-                    <td><?= htmlspecialchars($cd['spend']) ?></td>
-                    <td><?= htmlspecialchars($cd['objective_type']) ?></td>
+                    <td><?= $cd['spend'] ?></td>
+                    <td><?= $cd['objective_type'] ?></td>
                     <td><span class="text-primary shortnames"><?= $cd['short_adname'] ?></span></td>
                     <td>TBD</td>
                     <td class="metricsHere">Select Metric to Change</td>
@@ -204,13 +204,15 @@ ob_start();
 
          // event listener for inline metric select
          $('#test tbody').on('change', '#metricstbl', function() {
+
             const selectedValue = $(this).val();
             const $row = $(this).closest('tr');
             const $metricsCell = $row.find('.metricsHere');
-
+            const campId = $row.find('.tdcampaign').data('c-id');
+            const campdata = allcdata.find(c => c.campaign_id == campId);
             // Clear any existing content in the metricsHere cell
             $metricsCell.empty();
-            configInlineMetric(selectedValue, $metricsCell);
+            configInlineMetric(selectedValue, $metricsCell, campId, campdata);
         });
 
         $('#test').on('click', 'td.adgDetails', function() {
@@ -228,165 +230,479 @@ ob_start();
         });
     });//DOMContentLoaded  
     
-    function configInlineMetric(selectedValue, $metricsCell) {
+    function configInlineMetric(selectedValue, $metricsCell, campId, campdata) {
         let newContentHtml = '';
 
         switch (selectedValue) {
             case '0': // Basic Metric
+
                 newContentHtml = `
-                    <div class="scrollable-row">
-                        <span class="text-secondary">Result</span>
-                        <span>Cost per Result</span>
-                        <span>Total Cost</span>
-                        <span>CPC</span>
-                        <span>CPM</span>
-                        <span>Impressions</span>
-                        <span>Clicks</span>
-                        <span>Clicks (All)</span>
-                        <span>CTR</span>
-                        <span>Reach</span>
-                        <span>Cost per 1,000 Reached</span>
-                        <span>Frequency</span>
-                        <span>Conversions</span>
-                        <span>CPA</span>
-                        <span>CVR</span>
-                        <span>Real-time Conversions</span>
-                        <span>Real-time CPA</span>
-                        <span>Real-time CVR</span>
-                        <span>Conversions (SKAN click time)</span>
-                        <span>CPA (SKAN click time)</span>
-                        <span>CVR (SKAN click time)</span>
+                    <div class="scrollable-row d-flex">
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.result}</b></span>
+                            <span class="text-secondary">Result</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.cost_per_result}</b></span>
+                            <span class="text-secondary">Cost per Result</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>TBD!</b></span>
+                            <span class="text-secondary">Total Cost</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.cpc}</b></span>
+                            <span class="text-secondary">CPC</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.cpm}</b></span>
+                            <span class="text-secondary">CPM</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.impressions}</b></span>
+                            <span class="text-secondary">Impressions</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.clicks}</b></span>
+                            <span class="text-secondary">Clicks</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>TBD!</b></span>
+                            <span class="text-secondary">Clicks (All)</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.ctr}</b></span>
+                            <span class="text-secondary">CTR</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.reach}</b></span>
+                            <span class="text-secondary">Reach</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.cost_per_1000_reached}</b></span>
+                            <span class="text-secondary">Cost per 1,000 Reached</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.frequency}</b></span>
+                            <span class="text-secondary">Frequency</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.conversion}</b></span>
+                            <span class="text-secondary">Conversions</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.cost_per_conversion}</b></span>
+                            <span class="text-secondary">CPA</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.conversion_rate}</b></span>
+                            <span class="text-secondary">CVR</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.real_time_conversion}</b></span>
+                            <span class="text-secondary">Real-time Conversions</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.real_time_cost_per_conversion}</b></span>
+                            <span class="text-secondary">Real-time CPA</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.real_time_conversion_rate}</b></span>
+                            <span class="text-secondary">Real-time CVR</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.skan_conversion}</b></span>
+                            <span class="text-secondary">Conversions (SKAN click time)</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.skan_cost_per_conversion}</b></span>
+                            <span class="text-secondary">CPA (SKAN click time)</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.skan_conversion_rate}</b></span>
+                            <span class="text-secondary">CVR (SKAN click time)</span>
+                        </div>
                     </div>`;
                 break;
 
             case '1': // Video Views
                 newContentHtml = `
-                    <div class="scrollable-row">
-                        <span>Video Views</span>
-                        <span>2-Second Video Views</span>
-                        <span>6-Second Video Views</span>
-                        <span>6-Second Views (Focused View)</span>
-                        <span>Video Views at 100%</span>
-                        <span>Video Views at 75%</span>
-                        <span>Video Views at 50%</span>
-                        <span>Video Views at 25%</span>
-                        <span>Average Watch Time per Video View</span>
-                        <span>Average Watch Time per Person</span>
+                    <div class="scrollable-row d-flex">
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.video_play_actions}</b></span>
+                            <span class="text-secondary">Video Views</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.video_watched_2s}</b></span>
+                            <span class="text-secondary">2-Second Video Views</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.video_watched_6s}</b></span>
+                            <span class="text-secondary">6-Second Video Views</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>TBD!</b></span>
+                            <span class="text-secondary">6-Second Views (Focused View)</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.video_views_p100}</b></span>
+                            <span class="text-secondary">Video Views at 100%</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.video_views_p75}</b></span>
+                            <span class="text-secondary">Video Views at 75%</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.video_views_p50}</b></span>
+                            <span class="text-secondary">Video Views at 50%</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.video_views_p25}</b></span>
+                            <span class="text-secondary">Video Views at 25%</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.average_video_play}</b></span>
+                            <span class="text-secondary">Average Watch Time per Video View</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.average_video_play_per_user}</b></span>
+                            <span class="text-secondary">Average Watch Time per Person</span>
+                        </div>
                     </div>`;
+
                 break;
 
             case '2': // Engagement
                 newContentHtml = `
-                    <div class="scrollable-row">
-                        <span>Total Engagement</span>
-                        <span>Engagement Rate</span>
-                        <span>Paid Followers</span>
-                        <span>Paid Likes</span>
-                        <span>Paid Comments</span>
-                        <span>Paid Shares</span>
-                        <span>Paid Profile Visits</span>
-                        <span>Paid Profile Visit Rate</span>
+                    <div class="scrollable-row d-flex">
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.engagements}</b></span>
+                            <span class="text-secondary">Total Engagement</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.engagement_rate}</b></span>
+                            <span class="text-secondary">Engagement Rate</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.follows}</b></span>
+                            <span class="text-secondary">Paid Followers</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.likes}</b></span>
+                            <span class="text-secondary">Paid Likes</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.comments}</b></span>
+                            <span class="text-secondary">Paid Comments</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.shares}</b></span>
+                            <span class="text-secondary">Paid Shares</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.profile_visits}</b></span>
+                            <span class="text-secondary">Paid Profile Visits</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>TBD!</b></span>
+                            <span class="text-secondary">Paid Profile Visit Rate</span>
+                        </div>
                     </div>`;
                 break;
 
             case '3': // Interactive Add On
                 newContentHtml = `
-                    <div class="scrollable-row">
-                        <span>IA Impressions</span>
-                        <span>IA Destination Clicks</span>
-                        <span>IA Activity Clicks</span>
-                        <span>IA Option A Clicks</span>
-                        <span>IA Option B Clicks</span>
-                        <span>IA Recall Clicks</span>
+                    <div class="scrollable-row d-flex">
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.interactive_add_on_impressions}</b></span>
+                            <span class="text-secondary">IA Impressions</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.interactive_add_on_destination_clicks}</b></span>
+                            <span class="text-secondary">IA Destination Clicks</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.interactive_add_on_activity_clicks}</b></span>
+                            <span class="text-secondary">IA Activity Clicks</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.interactive_add_on_option_a_clicks}</b></span>
+                            <span class="text-secondary">IA Option A Clicks</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.interactive_add_on_option_b_clicks}</b></span>
+                            <span class="text-secondary">IA Option B Clicks</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.countdown_sticker_recall_clicks}</b></span>
+                            <span class="text-secondary">IA Recall Clicks</span>
+                        </div>
                     </div>`;
                 break;
 
             case '4': // Live Views
                 newContentHtml = `
-                    <div class="scrollable-row">
-                        <span>LIVE Views</span>
-                        <span>LIVE Unique Views</span>
-                        <span>Effective LIVE Views</span>
-                        <span>LIVE Product Clicks</span>
+                    <div class="scrollable-row d-flex">
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.live_views}</b></span>
+                            <span class="text-secondary">LIVE Views</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.live_unique_views}</b></span>
+                            <span class="text-secondary">LIVE Unique Views</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.live_effective_views}</b></span>
+                            <span class="text-secondary">Effective LIVE Views</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.live_product_clicks}</b></span>
+                            <span class="text-secondary">LIVE Product Clicks</span>
+                        </div>
                     </div>`;
                 break;
 
             case '5': // In App Event
                 newContentHtml = `
-                    <div class="scrollable-row">
-                        <span>Real-time App Install</span>
-                        <span>App Install</span>
-                        <span>Registration</span>
-                        <span>Purchase</span>
-                        <span>Add to Cart</span>
-                        <span>View Content</span>
-                        <span>Day 1 retention</span>
-                        <span>Unique Day 7 Retention</span>
-                        <span>Add Payment Info</span>
-                        <span>Add to Wishlist</span>
-                        <span>Launch App</span>
+                    <div class="scrollable-row d-flex">
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.app_install}</b></span>
+                            <span class="text-secondary">Real-time App Install</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>TBD!</b></span>
+                            <span class="text-secondary">App Install</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.registration}</b></span>
+                            <span class="text-secondary">Registration</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.purchase}</b></span>
+                            <span class="text-secondary">Purchase</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.app_event_add_to_cart}</b></span>
+                            <span class="text-secondary">Add to Cart</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.view_content}</b></span>
+                            <span class="text-secondary">View Content</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.next_day_open}</b></span>
+                            <span class="text-secondary">Day 1 Retention</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>TBD!</b></span>
+                            <span class="text-secondary">Unique Day 7 Retention</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.add_payment_info}</b></span>
+                            <span class="text-secondary">Add Payment Info</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.add_to_wishlist}</b></span>
+                            <span class="text-secondary">Add to Wishlist</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.launch_app}</b></span>
+                            <span class="text-secondary">Launch App</span>
+                        </div>
                     </div>`;
                 break;
 
             case '6': // Page Event
                 newContentHtml = `
-                    <div class="scrollable-row">
-                        <span>Complete Payment ROAS</span>
-                        <span>Complete Payment</span>
-                        <span>Page View</span>
-                        <span>Click Button</span>
-                        <span>Contact</span>
-                        <span>Complete Registration</span>
-                        <span>View Content</span>
-                        <span>Add to Cart</span>
-                        <span>Place an Order</span>
-                        <span>Initiate Checkout</span>
-                        <span>Add Payment Info</span>
-                        <span>Search</span>
-                        <span>Submit Form</span>
-                        <span>Download</span>
-                        <span>Add to Wishlist</span>
-                        <span>Subscribe</span>
+                    <div class="scrollable-row d-flex">
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.complete_payment_roas}</b></span>
+                            <span class="text-secondary">Complete Payment ROAS</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.complete_payment}</b></span>
+                            <span class="text-secondary">Complete Payment</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.total_pageview}</b></span>
+                            <span class="text-secondary">Page View</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.button_click}</b></span>
+                            <span class="text-secondary">Click Button</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.online_consult}</b></span>
+                            <span class="text-secondary">Contact</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.user_registration}</b></span>
+                            <span class="text-secondary">Complete Registration</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.page_content_view_events}</b></span>
+                            <span class="text-secondary">View Content</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.on_web_order}</b></span>
+                            <span class="text-secondary">Add to Cart</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.web_event_add_to_cart}</b></span>
+                            <span class="text-secondary">Place an Order</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.initiate_checkout}</b></span>
+                            <span class="text-secondary">Initiate Checkout</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>TBD!</b></span>
+                            <span class="text-secondary">Add Payment Info</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.page_event_search}</b></span>
+                            <span class="text-secondary">Search</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.form}</b></span>
+                            <span class="text-secondary">Submit Form</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.download_start}</b></span>
+                            <span class="text-secondary">Download</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.on_web_add_to_wishlist}</b></span>
+                            <span class="text-secondary">Add to Wishlist</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.on_web_subscribe}</b></span>
+                            <span class="text-secondary">Subscribe</span>
+                        </div>
                     </div>`;
                 break;
 
             case '7': // Attribution
                 newContentHtml = `
-                    <div class="scrollable-row">
-                        <span>VTA Conversion</span>
-                        <span>Cost per VTA Conversion</span>
-                        <span>VTA App Install</span>
-                        <span>Cost per VTA App Install</span>
-                        <span>VTA Registration</span>
-                        <span>Cost per VTA Registration</span>
-                        <span>VTA Purchase</span>
-                        <span>Cost per VTA Purchase</span>
-                        <span>CTA Conversion</span>
-                        <span>Cost per CTA Conversion</span>
-                        <span>CTA App Install</span>
-                        <span>Cost CTA App Install</span>
-                        <span>CTA Registration</span>
-                        <span>Cost per CTA Registration</span>
-                        <span>CTA Purchase</span>
-                        <span>Cost per CTA Purchase</span>
+                    <div class="scrollable-row d-flex">
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.vta_conversion}</b></span>
+                            <span class="text-secondary">VTA Conversion</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.cost_per_vta_conversion}</b></span>
+                            <span class="text-secondary">Cost per VTA Conversion</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.vta_app_install}</b></span>
+                            <span class="text-secondary">VTA App Install</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.cost_per_vta_app_install}</b></span>
+                            <span class="text-secondary">Cost per VTA App Install</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.vta_registration}</b></span>
+                            <span class="text-secondary">VTA Registration</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.cost_per_vta_registration}</b></span>
+                            <span class="text-secondary">Cost per VTA Registration</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.vta_purchase}</b></span>
+                            <span class="text-secondary">VTA Purchase</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.cost_per_vta_purchase}</b></span>
+                            <span class="text-secondary">Cost per VTA Purchase</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.cta_conversion}</b></span>
+                            <span class="text-secondary">CTA Conversion</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.cost_per_cta_conversion}</b></span>
+                            <span class="text-secondary">Cost per CTA Conversion</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.cta_app_install}</b></span>
+                            <span class="text-secondary">CTA App Install</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.cost_per_cta_app_install}</b></span>
+                            <span class="text-secondary">Cost per CTA App Install</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.cta_registration}</b></span>
+                            <span class="text-secondary">CTA Registration</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.cost_per_cta_registration}</b></span>
+                            <span class="text-secondary">Cost per CTA Registration</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.cta_purchase}</b></span>
+                            <span class="text-secondary">CTA Purchase</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.cost_per_cta_purchase}</b></span>
+                            <span class="text-secondary">Cost per CTA Purchase</span>
+                        </div>
                     </div>`;
                 break;
 
             case '8': // Web Conversion
                 newContentHtml = `
-                    <div class="scrollable-row">
-                        <span>Complete Payment ROAS (Onsite)</span>
-                        <span>Complete Payment (Onsite)</span>
-                        <span>Initiate Checkout (Onsite)</span>
-                        <span>Product Details Page View (Onsite)</span>
-                        <span>Add to Wishlist (Onsite)</span>
-                        <span>Add Billing (Onsite)</span>
-                        <span>Add to Cart (Onsite)</span>
-                        <span>Form Submission (Onsite)</span>
-                        <span>App Store Click (Onsite)</span>
-                        <span>Page Views (Onsite)</span>
-                        <span>CTA Button Clicks (Onsite)</span>
-                        <span>Product Clicks (Onsite)</span>
+                    <div class="scrollable-row d-flex">
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.complete_payment_roas}</b></span>
+                            <span class="text-secondary">Complete Payment ROAS (Onsite)</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.complete_payment}</b></span>
+                            <span class="text-secondary">Complete Payment (Onsite)</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.initiate_checkout}</b></span>
+                            <span class="text-secondary">Initiate Checkout (Onsite)</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>TBD!</b></span>
+                            <span class="text-secondary">Product Details Page View (Onsite)</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.on_web_add_to_wishlist}</b></span>
+                            <span class="text-secondary">Add to Wishlist (Onsite)</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>TBD!</b></span>
+                            <span class="text-secondary">Add Billing (Onsite)</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.web_event_add_to_cart}</b></span>
+                            <span class="text-secondary">Add to Cart (Onsite)</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.form}</b></span>
+                            <span class="text-secondary">Form Submission (Onsite)</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>TBD!</b></span>
+                            <span class="text-secondary">App Store Click (Onsite)</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.total_pageview}</b></span>
+                            <span class="text-secondary">Page Views (Onsite)</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>TBD!</b></span>
+                            <span class="text-secondary">CTA Button Clicks (Onsite)</span>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">
+                            <span><b>${campdata.live_product_clicks}</b></span>
+                            <span class="text-secondary">Product Clicks (Onsite)</span>
+                        </div>
                     </div>`;
                 break;
 
@@ -410,7 +726,7 @@ ob_start();
     
     function showAdgroupRow(adgroupData, row, tr) {
         let nestedTable = `
-                    <table class="text-nowrap table table-bordered table-striped adgroupTbl " style="width:100%;">
+                    <table class="text-nowrap table table-bordered table-striped adgroupTbl align-middle" style="width:100%;">
                         <thead>
                             <tr>
                                 <th></th>
