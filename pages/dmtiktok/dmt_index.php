@@ -2,6 +2,10 @@
 $data = require_once '../../queries/dm_tiktok/data_dmt_index.php';
 $campaign_data = $data['campaign_data'];
 $adgroup_data = $data['adgroup_data'];
+$obj_type = $data['obj_type'];
+$adv_name = $data['adv_name'];
+$obj_type_opts = '';
+// Metrics
 $metrics = $data['metrics'];
 $metrics_options = '';
 
@@ -10,6 +14,14 @@ foreach ($metrics as $index => $metric) {
         '<option value="%d">%s</option>',
         $index,
         htmlspecialchars($metric)
+    );
+}
+
+foreach ($obj_type as $ot => $value) {
+    $obj_type_opts .= sprintf(
+        '<option value="%s">%s</option>',
+        $value,
+        htmlspecialchars($value)
     );
 }
 
@@ -25,6 +37,21 @@ ob_start();
         display: flex;
         overflow-x: auto;
         white-space: nowrap;
+    }
+    .ui-autocomplete {
+        max-height: 200px; /* Set your desired maximum height */
+        overflow-y: auto;  /* Enable vertical scrolling */
+        overflow-x: hidden; /* Hide horizontal scrollbar if any */
+        z-index: 1000;     /* Ensure the dropdown appears above other elements */
+    }
+
+    .ui-menu .ui-menu-item-wrapper{
+        font-size: 11px !important;
+    }
+    .ui-autocomplete-input{
+        height: 30px !important;
+        font-size: 11px !important;
+        border-color: gray !important;
     }
 
     .scrollable-row span {
@@ -54,12 +81,21 @@ ob_start();
         font-size: 11px !important;
     }
 
+    .select2-container--default .select2-selection--multiple{
+        height: 10px !important;
+    }
+    .select2-container .select2-selection--multiple{
+        min-height: 29px !important;
+    }
+    .select2-container--default .select2-selection--single{
+        height: 30px !important;
+    }
+
     .select2-results__option {
         font-size: 12px !important;
         padding: 2px;
         margin: 0 0 5px;
     }
-
     /*START Styles for expandable rows */
     td.details-control  {
         cursor: pointer;
@@ -111,7 +147,62 @@ ob_start();
 
 <div class="main-content m-5">
     <div class="row">
-        <div class="col-12 mt-5">
+
+            <form id="campFilter">
+                <div class="row bg-light-subtle shadow-sm mb-1 p-1 align-items-center">
+
+                    <div class="col-sm-3">
+                        <div class="mb-3">
+                        <label class="form-label mb-0">Campaign Status</label>
+                            <select class="form-select form-select-sm select2" name="campstatus[]" id="campstatus" style="width:100%" multiple="multiple">
+                                <option value="1">All</option>
+                                <option value="2">Active</option>
+                                <option value="3">Not Delivering</option>
+                                <option value="4">Inactive</option>
+                                <option value="5">Deleted</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="mb-3">
+                        <label class="form-label mb-0">Metrics</label>
+                            <select class="form-select form-select-sm select2" name="metricsfilter" id="metricsfilter" style="width:100%">
+                            <option value="">Select Metric</option>
+                            <?= $metrics_options ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="mb-3">
+                        <label class="form-label mb-0">Objective Type</label>
+                            <select class="form-select form-select-sm select2" name="objType" id="objType" style="width:100%">
+                            <option value="">Select Objective Type</option>
+                            <?= $obj_type_opts ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 ">
+                        <div class="mb-3">
+                        <label class="form-label mb-0">Advertiser</label>
+                            <input type="text" id="advertiser_name" name="advertiser_name" class="form-control" placeholder="Advertiser ..">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="d-flex">
+                            <button class="btn btn-xs p-0 btn-primary px-2 py-1 me-2" style="font-size:11px !important">Search</button>
+                            <button class="btn btn-xs px-2 py-1 m-0 btn-primary" style="font-size:11px !important">Clear</button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+
+
+        <div class="col-12 bg-light-subtle p-2 shadow-sm">
             <!-- <h4 class="text-primary">Tiktok Campaigns</h4> -->
         <!-- <div class="col-12 border border-primary">
             <h4 class="text-primary">REFERENCE Campaigns</h4>
@@ -170,11 +261,12 @@ ob_start();
     })();
     let allcdata = <?= json_encode($campaign_data) ?>;
     let alladgdata = <?= json_encode($adgroup_data) ?>;
+    let advName = <?= json_encode($adv_name) ?>;
     let table;
 
     $(document).ready(function() {
         initializeDataTable();
-
+        $('.select2').select2();
         // Details control event listener
         $('#test tbody').on('click', 'td.details-control', function () {
             let tr = $(this).closest('tr');
@@ -244,7 +336,9 @@ ob_start();
             configAdgInlineMetric(adgselectedValue, $adgmetricsCell, adgId, adgdata);
         });
 
-
+        $("#advertiser_name").autocomplete({
+            source: advName,
+        });
     });//DOMContentLoaded  
     
     function configInlineMetric(selectedValue, $metricsCell, campId, campdata) {

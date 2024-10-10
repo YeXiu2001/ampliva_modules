@@ -45,6 +45,24 @@ if ($adgroup_result) {
     }
 }
 
+$obj_type_q = "SELECT DISTINCT objective_type from campaign_data;";
+$obj_type_result = $mysqli->query($obj_type_q);
+$obj_type = [];
+if ($obj_type_result) {
+    while ($row = $obj_type_result->fetch_assoc()) {
+        $obj_type[] = $row['objective_type'];
+    }
+}
+
+$adv_name_q = "SELECT DISTINCT advertiser_name from campaign_data;";
+$adv_name_result = $mysqli->query($adv_name_q);
+$adv_name = [];
+if ($adv_name_result) {
+    while ($row = $adv_name_result->fetch_assoc()) {
+        $adv_name[] = $row['advertiser_name'];
+    }
+}
+
 
 $metrics = [
     'Basic Metric',
@@ -61,5 +79,7 @@ $metrics = [
 return [
     'campaign_data' => $campaign_data,
     'adgroup_data' => $adgroup_data,
+    'obj_type' => $obj_type,
+    'adv_name' => $adv_name,
     'metrics' => $metrics,
 ];
